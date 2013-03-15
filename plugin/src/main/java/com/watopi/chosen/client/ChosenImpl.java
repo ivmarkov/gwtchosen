@@ -429,8 +429,6 @@ public class ChosenImpl {
     }
 
     private void closeField() {
-        $(document).unbind("click", clickTestAction);
-
         if (!isMultiple) {
             selectedItem.attr(TABINDEX_PROPERTY, searchField.attr(TABINDEX_PROPERTY));
             searchField.attr(TABINDEX_PROPERTY, "-1");
@@ -467,7 +465,6 @@ public class ChosenImpl {
                 if (isMultiple) {
                     searchField.val("");
                 }
-                $(document).click(clickTestAction);
                 resultsShow();
             } else if (!isMultiple && !$e.isEmpty()
                     && ($e.get(0) == selectedItem.get(0) || $e.parents("a." + css.chznSingle()).length() > 0)) {
@@ -934,6 +931,8 @@ public class ChosenImpl {
             return;
         }
 
+        $(document).unbind("click", clickTestAction);
+
         if (!isMultiple) {
             selectedItem.removeClass(css.chznSingleWithDrop());
         }
@@ -983,6 +982,12 @@ public class ChosenImpl {
     }
 
     private boolean resultsShow() {
+        if (resultsShowing) {
+            return true;
+        }
+
+        $(document).click(clickTestAction);
+
         if (!isMultiple) {
             selectedItem.addClass(css.chznSingleWithDrop());
             if (resultSingleSelected != null) {
@@ -1004,7 +1009,7 @@ public class ChosenImpl {
         searchField.val(searchField.val());
 
         winnowResults();
-
+    	
         return true;
     }
 
